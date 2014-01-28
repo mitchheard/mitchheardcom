@@ -1,4 +1,7 @@
 *.log
 *.pot
 *.pyc
+venv
+*~
+.DS_Store
 local_settings.py
