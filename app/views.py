@@ -1,6 +1,5 @@
 import os
 from flask import render_template, request, session, url_for, redirect, send_from_directory
-#from werkzeug.utils import secure_filename
 from models import Person, Article
 from forms import SignupForm, ArticleCreateForm, SigninForm
 from app import app, db
@@ -64,29 +63,9 @@ def profile():
             return render_template('create.html', form=form)
     return render_template('profile.html')
 
-
-@app.route('/remove', methods=['GET', 'POST'])
-def moderate():
-    return render_template('create.html')
-
 @app.route('/signout')
 def signout():
     if 'email' not in session:
         return redirect(url_for('index'))
     session.pop('email', None)
     return redirect(url_for('index'))
-
-# @app.route('/upload', methods=['GET','POST'])
-# def upload_file():
-#     if request.method == 'POST':
-#         file = request.files['file']
-#         if file.filename:
-#             filename = secure_filename(file.filename)
-#             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-#             return render_template('index.html', filename=filename)
-#     return render_template('index.html')
-#
-# @app.route('/uploads/')
-# def uploaded_file(filename):
-#     return send_from_directory(app.config['UPLOAD_FOLDER'],
-#                                filename, as_attachment=True)
