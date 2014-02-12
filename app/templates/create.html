@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="form">
+  <h2>Create Article</h2>
+
+  <form action="{{ url_for('profile') }}" method=post>
+    {{ form.hidden_tag() }}
+
+    {{ form.title.label }}
+    {{ form.title }}
+
+    {{ form.body.label }}
+    {{ form.body }}
+
+<input id="submit" name="submit" class="btn btn-inverse" type="submit" value="Create article">
+  </form>
+</div>
+{% endblock %}

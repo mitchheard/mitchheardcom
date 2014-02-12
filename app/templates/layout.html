@@ -21,8 +21,27 @@
 <body>
     <div class="container">
           <div class="page-header">
-            <h1>Flask Audio Streaming App</h1>
+            <h1>Flask Blog</h1>
           </div>
+     <header>
+         <div class="navbar">
+      <div class="navbar-inner">
+
+        <ul class="nav">
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+              {% if 'email' in session %}
+
+              <li><a class='active' href="{{ url_for('profile') }}">Profile</a></li>
+              <li><a href="{{ url_for('signout') }}">Sign Out</a></li>
+              {% else %}
+              <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+              <li><a href="{{ url_for('signin') }}">Sign In</a></li>
+              {% endif %}
+         </ul>
+      </div>
+    </div>
+
+      </header>
         {% block content %}
 
         {% endblock %}
