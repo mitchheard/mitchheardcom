@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+  <h2>Remove Article</h2>
+
+    {% for post in articles  %}
+    <div>
+        <span>{{ post.title }}</span>
+        <span>{{ post.body }}</span>
+        <span>Created {{ post.created_in_words }} ago</span>
+        <hr/>
+    {% endfor %}
+    </div>
+{% endblock %}

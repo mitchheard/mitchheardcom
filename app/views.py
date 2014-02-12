@@ -14,10 +14,22 @@ def favicon():
 def page_not_found(e):
     return render_template('404.html'), 404
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    form = SigninForm()
     articles = Article.all()
-    return render_template('index.html', articles=articles)
+    if request.method == 'POST':
+        if form.validate() == False:
+            return render_template('index.html', form=form)
+        else:
+            session['email'] = form.email.data
+            return redirect(url_for('profile'))
+
+    elif request.method == 'GET':
+        return render_template('index.html', articles=articles)
+
+    else:
+        return render_template('index.html', articles=articles)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -38,7 +50,7 @@ def signup():
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if 'email' not in session:
-        return redirect(url_for('signin'))
+        return redirect(url_for('index'))
     person = Person.query.filter_by(email=session['email']).first()
     if person:
         article = Article()
@@ -52,24 +64,15 @@ def profile():
             return render_template('create.html', form=form)
     return render_template('profile.html')
 
-@app.route('/signin', methods=['GET', 'POST'])
-def signin():
-  form = SigninForm()
 
-  if request.method == 'POST':
-    if form.validate() == False:
-      return render_template('signin.html', form=form)
-    else:
-      session['email'] = form.email.data
-      return redirect(url_for('profile'))
-
-  elif request.method == 'GET':
-    return render_template('signin.html', form=form)
+@app.route('/remove', methods=['GET', 'POST'])
+def moderate():
+    return render_template('create.html')
 
 @app.route('/signout')
 def signout():
     if 'email' not in session:
-        return redirect(url_for('signin'))
+        return redirect(url_for('index'))
     session.pop('email', None)
     return redirect(url_for('index'))
 

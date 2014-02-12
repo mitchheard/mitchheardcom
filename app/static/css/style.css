@@ -1,12 +1,11 @@
-.audio {
- width: 100%;
- }
- .modal-footer {
- text-align: center;
- }
- .form-audio {
- margin-left: 350px;
- }
- .page-header {
- text-align: center;
- }
+html {background: #b5170b;}
+body {}
+body .zocial {margin: 8px 4px; font-size: 13px;}
+h2 {font-size: 17px; font-weight: normal; padding: 1em 0 0.75em; border-bottom: 1px solid #eee;}
+a {text-decoration: none; color: #ff0f33;}
+
+.modal-footer {text-align: center;}
+.page-header {text-align: center; margin-top: 50px; height: 100px;}
+.page-banner {}
+    .pager-banner-left {}
+    .page-banner-right {float: left; width: 50%; display: inline;}
