@@ -29,6 +29,12 @@
 
 
         <script src="{{ url_for('static', filename='js/vendor/modernizr-2.6.2-respond-1.1.0.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='tinymce/tinymce.min.js') }}"></script>
+        <script type="text/javascript">
+        tinymce.init({
+            selector: "textarea"
+         });
+        </script>
         <link rel="shortcut icon" href="{{ url_for('static', filename='ico/favicon.ico') }}">
     {% endblock %}
  </head>
@@ -54,43 +60,20 @@
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
                   <ul class="dropdown-menu">
-                    <li><a href="{{ url_for('profile') }}">Create Post</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
+                    <li><a href="{{ url_for('dashboard', name=name) }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('settings') }}">Settings</a></li>
+                    <li><a href="{{ url_for('article_create') }}">Create Article</a></li>
                     <li class="divider"></li>
-                    <li class="dropdown-header">Nav header</li>
-                    <li><a href="#">Separated link</a></li>
-                    <li><a href="#">One more separated link</a></li>
+                    <li class="dropdown-header">Authentication</li>
+                    {% if 'email' in session %}
+                    <li><a href="{{ url_for('signout', name=name) }}">Sign Out</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('signin', name=name) }}">Sign In</a></li>
+                    <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+                    {% endif %}
                   </ul>
                 </li>
               </ul>
-              {% if 'email' in session %}
-                <form class="navbar-form navbar-right" action="{{ url_for('signout') }}">
-                   <button type="submit" class="btn btn-success">Sign Out</button>
-                </form>
-              {% else %}
-
-              {% for message in form.email.errors %}
-                <div class="alert alert-error">{{ message }}</div>
-              {% endfor %}
-
-              {% for message in form.password.errors %}
-                <div class="alert alert-error">{{ message }}</div>
-              {% endfor %}
-              <form class="form navbar-form navbar-right" action="{{ url_for('index') }}" method=post>
-
-                {{ form.hidden_tag() }}
-
-                <div class="form-group">
-                  <input id="email" name="email" type="text" placeholder="Email" class="form-control">
-                </div>
-                <div class="form-group">
-                  <input id="password" name="password" type="password" placeholder="Password" class="form-control">
-                </div>
-
-                <button id= "submit" type="submit" class="btn btn-success">Sign in</button>
-              </form>
-              {% endif %}
             </div><!--/.navbar-collapse -->
           </div>
         </div>

@@ -9,3 +9,13 @@ a {text-decoration: none; color: #ff0f33;}
 .page-banner {}
     .pager-banner-left {}
     .page-banner-right {float: left; width: 50%; display: inline;}
+
+/* TinyMCE WYSIWYG */
+input[type="text"] {width: 98%;}
+textarea {width: 98%; height: 300px;}
+input[type="password"] {width: 100%;}
+
+/* Dashboard */
+.dash {margin-left: 120px; margin-bottom: 20px;}
+.btn-dash {margin-top: 20px; margin-left: 270px;}
+.btn-delete {margin-bottom: 20px;}

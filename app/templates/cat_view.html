@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for posts in category_articles %}
+    <h3><a href="{{ url_for('show_article', id=posts.id, slug=posts.slug) }}">{{ posts.title }}</a></h3>
+    <p><a href="/ar/{{ posts.person_name }}">{{ posts.person_name }}</a> | {{ posts.created_in_words }} | <a href="/c/{{ posts.category_name }}">{{ posts.category_name }}</a></p>
+    <hr/>
+    {% endfor %}
+    {% endblock %}

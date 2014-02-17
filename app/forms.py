@@ -1,14 +1,32 @@
 from flask.ext.wtf import Form
-from wtforms import TextField, validators, PasswordField, TextAreaField, SubmitField
-from models import Person
+from wtforms import TextField, validators, PasswordField, TextAreaField, SubmitField, HiddenField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
+from models import Person, Category
 
 strip_filter = lambda x: x.strip() if x else None
+
+def category_choice():
+    return Category.query.all()
 
 class ArticleCreateForm(Form):
     title = TextField('Title', [validators.Required("Please enter title.")],
                       filters=[strip_filter] )
     body = TextAreaField('Body', [validators.Required("Please enter body.")],
                          filters=[strip_filter])
+    category = QuerySelectField('Category', query_factory=category_choice )
+    person_name = HiddenField()
+
+class ArticleUpdateForm(ArticleCreateForm):
+    id = HiddenField()
+
+class CategoryCreateForm(Form):
+    name = TextField('Name', [validators.required(), validators.length(min=1,max=240)])
+    description = TextAreaField('Description', [validators.required()])
+
+class PersonUpdateForm(Form):
+    firstname = TextField("First name", [validators.Required("Please enter your first name.")])
+    lastname = TextField("Last name", [validators.Required("Please enter your last name.")])
+    password = PasswordField('Password', [validators.Required("Please enter a password.")])
 
 class SignupForm(Form):
     firstname = TextField("First name", [validators.Required("Please enter your first name.")])

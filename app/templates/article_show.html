@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>{{ article.title }}</h1>
+ 
+    <p><a href="/ar/{{ article.person_name}}">{{ article.person_name }}</a> | {{ article.created_in_words }} | <a href="/c/{{ article.category_name }}">{{ article.category_name }}</a></p>
+    <p>{{ article.body | safe}}</p>
+ 
+    <hr/>
+{% endblock %}
+

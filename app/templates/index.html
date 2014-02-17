@@ -2,41 +2,18 @@
 {% block title %} - Home{% endblock %}
 {% block content %}
 
-    <h1>Articles3</h1>
+    <h1>Articles</h1>
     <hr/>
-    {% for post in articles  %}
-    <h3>{{ post.title }}</h3>
-    <p>{{ post.body }}</p>
-    <h6>Created {{ post.created_in_words }} ago</h6>
+    {%   for post in articles %}
+    <h3><a href="{{ url_for('show_article', id=post.id, slug=post.slug) }}">{{ post.title }}</a></h3>
+    <p>{{ post.body|truncate(200)| safe }}</p>
+    <h6>
+        By <a href="ar/{{ post.person_name }}">{{ post.person_name }}</a> |
+        {{ post.created_in_words }} ago |
+        <a href="c/{{ post.category_name }}">{{ post.category_name }}</a>
+
+    </h6>
         <hr/>
     {% endfor %}
-
-{#{% if filename %}#}
-{#    <div>#}
-{#        <h2>Song : {{ filename }}</h2>#}
-{#        <div class="hero-unit">#}
-{#        <audio class="audio" controls>#}
-{#            <source src="uploads/{{ filename }}" type="audio/mpeg">#}
-{#        </audio><hr/>#}
-{##}
-{#        <p>#}
-{#            <a href="{{ url_for('index') }}" class="btn btn-primary">Home</a>#}
-{#            <a href="/uploads/{{ filename }}" class="btn btn-info">Download</a>#}
-{#            <a href="{{ url_for('upload_file') }} " class="btn btn-danger">Upload Another</a>#}
-{#        </p>#}
-{##}
-{#        </div>#}
-{##}
-{#    </div>#}
-{#{% else %}#}
-{##}
-{#<div class="form-audio">#}
-{#    <h2>Upload Song</h2>#}
-{#    <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">#}
-{#        <input type="file" name="file" class="button" multiple> <br/><br/>#}
-{#        <input type="submit" value="Upload" class="btn btn-danger">#}
-{#      </form>#}
-{#</div>#}
-{#{% endif %}#}
 
 {% endblock %}

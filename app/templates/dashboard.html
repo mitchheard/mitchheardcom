@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% if not articles  %}
+    <div class="dash">
+        <h1>Its Lonely here, Create Some Articles</h1>
+        <p class="btn-dash"><a href="{{ url_for('article_create') }}" class="btn btn-inverse">Get Started</a></p><br/>
+    </div>
+    {% else %}
+ 
+    <table class="table">
+    <thead>
+          <tr>
+            <th>Article Name</th>
+            <th>Category</th>
+            <th>Edit Article</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+           {% for posts in articles %}
+        <tr class="info">
+            <td><a href="{{ url_for('show_article', id=posts.id, slug=posts.slug) }}">{{ posts.title }}</a></td>
+            <td><a href="{{ url_for('category_articles', category=posts.category) }}">{{ posts.category }}</a></td>
+            <td><a href="{{ url_for('article_update', id=posts.id, slug=posts.slug) }}">Edit</a></td>
+            <td><a href="{{ url_for('article_delete', id=posts.id, slug=posts.slug) }}">Delete</a></td>
+        </tr>
+        {% endfor %}
+ 
+    </table>
+{% endif %}
+{% endblock %}
