@@ -13,7 +13,8 @@ app.config.update(
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static/uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://mheard:12345@localhost/mitchheardcom'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://mheard:12345@localhost/mitchheardcom'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 app.config.from_object('config')
 
