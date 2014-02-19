@@ -1,0 +1,1996 @@
+--
+-- PostgreSQL database cluster dump
+--
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+
+--
+-- Roles
+--
+
+CREATE ROLE mheard;
+ALTER ROLE mheard WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION PASSWORD 'md5ac9df93073cc7d1b39ad8ddf530c7eda';
+CREATE ROLE "mitch.heard";
+ALTER ROLE "mitch.heard" WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION;
+
+
+
+
+
+
+--
+-- Database creation
+--
+
+CREATE DATABASE bizitopen WITH TEMPLATE = template0 OWNER = "mitch.heard";
+CREATE DATABASE "mitch.heard" WITH TEMPLATE = template0 OWNER = "mitch.heard";
+CREATE DATABASE mitchheardcom WITH TEMPLATE = template0 OWNER = "mitch.heard";
+REVOKE ALL ON DATABASE mitchheardcom FROM PUBLIC;
+REVOKE ALL ON DATABASE mitchheardcom FROM "mitch.heard";
+GRANT ALL ON DATABASE mitchheardcom TO "mitch.heard";
+GRANT CONNECT,TEMPORARY ON DATABASE mitchheardcom TO PUBLIC;
+GRANT ALL ON DATABASE mitchheardcom TO mheard;
+REVOKE ALL ON DATABASE template1 FROM PUBLIC;
+REVOKE ALL ON DATABASE template1 FROM "mitch.heard";
+GRANT ALL ON DATABASE template1 TO "mitch.heard";
+GRANT CONNECT ON DATABASE template1 TO PUBLIC;
+CREATE DATABASE voyagur_db WITH TEMPLATE = template0 OWNER = "mitch.heard";
+
+
+\connect bizitopen
+
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO "mitch.heard";
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO "mitch.heard";
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO "mitch.heard";
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone NOT NULL,
+    is_superuser boolean NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(75) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.auth_user OWNER TO "mitch.heard";
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_groups OWNER TO "mitch.heard";
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_groups_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE auth_user_groups_id_seq OWNED BY auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_user_permissions OWNER TO "mitch.heard";
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permissions.id;
+
+
+--
+-- Name: business_business; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE business_business (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    location_id integer NOT NULL,
+    logo character varying(100),
+    "phoneNumber_id" integer NOT NULL,
+    verified boolean NOT NULL,
+    "lastUpdated" timestamp with time zone NOT NULL,
+    website character varying(200) NOT NULL
+);
+
+
+ALTER TABLE public.business_business OWNER TO "mitch.heard";
+
+--
+-- Name: business_business_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE business_business_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.business_business_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: business_business_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE business_business_id_seq OWNED BY business_business.id;
+
+
+--
+-- Name: business_day; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE business_day (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    open_hour time without time zone NOT NULL,
+    close_hour time without time zone NOT NULL,
+    business_id integer NOT NULL
+);
+
+
+ALTER TABLE public.business_day OWNER TO "mitch.heard";
+
+--
+-- Name: business_day_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE business_day_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.business_day_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: business_day_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE business_day_id_seq OWNED BY business_day.id;
+
+
+--
+-- Name: business_location; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE business_location (
+    id integer NOT NULL,
+    address character varying(100) NOT NULL,
+    city character varying(25) NOT NULL,
+    state character varying(25) NOT NULL,
+    zipcode integer NOT NULL
+);
+
+
+ALTER TABLE public.business_location OWNER TO "mitch.heard";
+
+--
+-- Name: business_location_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE business_location_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.business_location_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: business_location_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE business_location_id_seq OWNED BY business_location.id;
+
+
+--
+-- Name: business_phonenumber; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE business_phonenumber (
+    id integer NOT NULL,
+    number character varying(15) NOT NULL,
+    numbertype character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.business_phonenumber OWNER TO "mitch.heard";
+
+--
+-- Name: business_phonenumber_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE business_phonenumber_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.business_phonenumber_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: business_phonenumber_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE business_phonenumber_id_seq OWNED BY business_phonenumber.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    user_id integer NOT NULL,
+    content_type_id integer,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO "mitch.heard";
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO "mitch.heard";
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO "mitch.heard";
+
+--
+-- Name: django_site; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE django_site (
+    id integer NOT NULL,
+    domain character varying(100) NOT NULL,
+    name character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.django_site OWNER TO "mitch.heard";
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE django_site_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_site_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE django_site_id_seq OWNED BY django_site.id;
+
+
+--
+-- Name: moderation_moderatedobject; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE moderation_moderatedobject (
+    id integer NOT NULL,
+    content_type_id integer,
+    object_pk integer,
+    date_created timestamp with time zone NOT NULL,
+    moderation_state smallint NOT NULL,
+    moderation_status smallint NOT NULL,
+    moderated_by_id integer,
+    moderation_date timestamp with time zone,
+    moderation_reason text,
+    changed_object text NOT NULL,
+    changed_by_id integer,
+    CONSTRAINT moderation_moderatedobject_object_pk_check CHECK ((object_pk >= 0))
+);
+
+
+ALTER TABLE public.moderation_moderatedobject OWNER TO "mitch.heard";
+
+--
+-- Name: moderation_moderatedobject_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE moderation_moderatedobject_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.moderation_moderatedobject_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: moderation_moderatedobject_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE moderation_moderatedobject_id_seq OWNED BY moderation_moderatedobject.id;
+
+
+--
+-- Name: south_migrationhistory; Type: TABLE; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE TABLE south_migrationhistory (
+    id integer NOT NULL,
+    app_name character varying(255) NOT NULL,
+    migration character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.south_migrationhistory OWNER TO "mitch.heard";
+
+--
+-- Name: south_migrationhistory_id_seq; Type: SEQUENCE; Schema: public; Owner: mitch.heard
+--
+
+CREATE SEQUENCE south_migrationhistory_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.south_migrationhistory_id_seq OWNER TO "mitch.heard";
+
+--
+-- Name: south_migrationhistory_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mitch.heard
+--
+
+ALTER SEQUENCE south_migrationhistory_id_seq OWNED BY south_migrationhistory.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_user ALTER COLUMN id SET DEFAULT nextval('auth_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_user_groups ALTER COLUMN id SET DEFAULT nextval('auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY business_business ALTER COLUMN id SET DEFAULT nextval('business_business_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY business_day ALTER COLUMN id SET DEFAULT nextval('business_day_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY business_location ALTER COLUMN id SET DEFAULT nextval('business_location_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY business_phonenumber ALTER COLUMN id SET DEFAULT nextval('business_phonenumber_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY django_site ALTER COLUMN id SET DEFAULT nextval('django_site_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY moderation_moderatedobject ALTER COLUMN id SET DEFAULT nextval('moderation_moderatedobject_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY south_migrationhistory ALTER COLUMN id SET DEFAULT nextval('south_migrationhistory_id_seq'::regclass);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('auth_group_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add permission	1	add_permission
+2	Can change permission	1	change_permission
+3	Can delete permission	1	delete_permission
+4	Can add group	2	add_group
+5	Can change group	2	change_group
+6	Can delete group	2	delete_group
+7	Can add user	3	add_user
+8	Can change user	3	change_user
+9	Can delete user	3	delete_user
+10	Can add content type	4	add_contenttype
+11	Can change content type	4	change_contenttype
+12	Can delete content type	4	delete_contenttype
+13	Can add session	5	add_session
+14	Can change session	5	change_session
+15	Can delete session	5	delete_session
+16	Can add site	6	add_site
+17	Can change site	6	change_site
+18	Can delete site	6	delete_site
+19	Can add log entry	7	add_logentry
+20	Can change log entry	7	change_logentry
+21	Can delete log entry	7	delete_logentry
+22	Can add migration history	8	add_migrationhistory
+23	Can change migration history	8	change_migrationhistory
+24	Can delete migration history	8	delete_migrationhistory
+25	Can add location	9	add_location
+26	Can change location	9	change_location
+27	Can delete location	9	delete_location
+28	Can add phone number	10	add_phonenumber
+29	Can change phone number	10	change_phonenumber
+30	Can delete phone number	10	delete_phonenumber
+31	Can add business	11	add_business
+32	Can change business	11	change_business
+33	Can delete business	11	delete_business
+34	Can add day	12	add_day
+35	Can change day	12	change_day
+36	Can delete day	12	delete_day
+37	Can add moderated object	13	add_moderatedobject
+38	Can change moderated object	13	change_moderatedobject
+39	Can delete moderated object	13	delete_moderatedobject
+\.
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('auth_permission_id_seq', 39, true);
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+1	pbkdf2_sha256$10000$NjdFAeOQrLch$fTEejsFLxux5a2UcSvRprPQSFmfVevLYJ/mTnvv/tpk=	2014-01-29 22:46:06.7665-06	t	mheard			mitchheard@gmail.com	t	t	2013-04-28 18:29:35.790058-05
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('auth_user_id_seq', 1, true);
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: business_business; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY business_business (id, name, location_id, logo, "phoneNumber_id", verified, "lastUpdated", website) FROM stdin;
+1	Best Buy	1	images/logos/dwt404pic.png	1	t	2013-04-28 18:34:14.469212-05	http://www.bestbuy.com/
+2	Target	2	images/logos/Target-logo.gif	2	t	2013-05-02 23:37:48.635102-05	http://www.target.com/
+3	Walmart	3		3	t	2013-05-02 23:40:22.410679-05	http://www.walmart.com/
+\.
+
+
+--
+-- Name: business_business_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('business_business_id_seq', 3, true);
+
+
+--
+-- Data for Name: business_day; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY business_day (id, name, open_hour, close_hour, business_id) FROM stdin;
+3	tuesday	12:33:47	18:33:56	1
+6	friday	12:33:49	18:33:53	1
+7	saturday	12:33:50	18:33:52	1
+4	wednesday	12:33:47	23:55:13	1
+5	thursday	12:33:48	22:35:12	1
+8	sunday	08:00:00	21:00:00	2
+9	monday	08:00:00	22:00:00	2
+10	tuesday	08:00:00	22:00:00	2
+11	wednesday	08:00:00	22:00:00	2
+12	thursday	08:00:00	22:00:00	2
+13	friday	08:00:00	22:00:00	2
+14	saturday	08:00:00	22:00:00	2
+15	sunday	05:00:00	01:00:00	3
+16	monday	05:00:00	01:00:00	3
+17	tuesday	05:00:00	01:00:00	3
+18	wednesday	05:00:00	01:00:00	3
+19	thursday	05:00:00	01:00:00	3
+20	friday	05:00:00	01:00:00	3
+21	saturday	05:00:00	01:00:00	3
+1	sunday	12:33:45	18:33:58	1
+2	monday	12:33:45	18:33:57	1
+\.
+
+
+--
+-- Name: business_day_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('business_day_id_seq', 21, true);
+
+
+--
+-- Data for Name: business_location; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY business_location (id, address, city, state, zipcode) FROM stdin;
+1	4007 Rockledge Dr	Austin	TX	78731
+2	8601 Research Boulevard	Austin	TX	78758
+3	2525 W Anderson Ln	Austin	TX	78757
+\.
+
+
+--
+-- Name: business_location_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('business_location_id_seq', 3, true);
+
+
+--
+-- Data for Name: business_phonenumber; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY business_phonenumber (id, number, numbertype) FROM stdin;
+1	7135307896	WORK
+2	(512) 837-5163	WORK
+3	(512) 354-3702	WORK
+\.
+
+
+--
+-- Name: business_phonenumber_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('business_phonenumber_id_seq', 3, true);
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY django_admin_log (id, action_time, user_id, content_type_id, object_id, object_repr, action_flag, change_message) FROM stdin;
+1	2013-04-28 18:33:03.594243-05	1	9	1	4007 Rockledge Dr, Austin	1	
+2	2013-04-28 18:33:24.734622-05	1	10	1	7135307896	1	
+3	2013-04-28 18:34:14.481233-05	1	11	1	Best Buy	1	
+4	2013-05-01 23:52:19.219993-05	1	11	1	Best Buy	2	Changed close_hour for day "wednesday".
+5	2013-05-02 22:17:20.685597-05	1	11	1	Best Buy	2	Changed close_hour for day "thursday".
+6	2013-05-02 22:19:47.717181-05	1	9	2	8601 Research Boulevard, Austin	1	
+7	2013-05-02 23:35:11.062877-05	1	10	2	(512) 837-5163	1	
+8	2013-05-02 23:37:48.664528-05	1	11	2	Target	1	
+9	2013-05-02 23:38:38.977227-05	1	9	3	2525 W Anderson Ln, Austin	1	
+10	2013-05-02 23:39:04.753605-05	1	10	3	(512) 354-3702	1	
+11	2013-05-02 23:40:22.461767-05	1	11	3	Walmart	1	
+\.
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('django_admin_log_id_seq', 11, true);
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY django_content_type (id, name, app_label, model) FROM stdin;
+1	permission	auth	permission
+2	group	auth	group
+3	user	auth	user
+4	content type	contenttypes	contenttype
+5	session	sessions	session
+6	site	sites	site
+7	log entry	admin	logentry
+8	migration history	south	migrationhistory
+9	location	business	location
+10	phone number	business	phonenumber
+11	business	business	business
+12	day	business	day
+13	moderated object	moderation	moderatedobject
+\.
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('django_content_type_id_seq', 13, true);
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY django_session (session_key, session_data, expire_date) FROM stdin;
+tv1ooiuzlybsh09id9trcri7ag9dh0f9	YmJhM2NhMjAyOGUwZWQyMDMxNTM5NjE5NmQ0ZTU4MDY1YmY0ZWU3ODqAAn1xAShVEl9hdXRoX3VzZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEDVQ1fYXV0aF91c2VyX2lkcQRLAXUu	2013-05-12 18:30:33.285287-05
+6sw5bu4vjnnsmyesbq7nnhytbbsn3mrb	YmJhM2NhMjAyOGUwZWQyMDMxNTM5NjE5NmQ0ZTU4MDY1YmY0ZWU3ODqAAn1xAShVEl9hdXRoX3VzZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEDVQ1fYXV0aF91c2VyX2lkcQRLAXUu	2013-05-16 22:18:53.997714-05
+pc4mddaogh3ofwsx3ld9cq39uho1xedh	YmJhM2NhMjAyOGUwZWQyMDMxNTM5NjE5NmQ0ZTU4MDY1YmY0ZWU3ODqAAn1xAShVEl9hdXRoX3VzZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEDVQ1fYXV0aF91c2VyX2lkcQRLAXUu	2013-12-18 10:12:40.132973-06
+c82gni8029zlvlxhoxzai7pn19r5tub9	YmJhM2NhMjAyOGUwZWQyMDMxNTM5NjE5NmQ0ZTU4MDY1YmY0ZWU3ODqAAn1xAShVEl9hdXRoX3VzZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEDVQ1fYXV0aF91c2VyX2lkcQRLAXUu	2014-01-27 15:26:18.299486-06
+7kztqaskx7mj4eono87bsja3nodzknjw	YmJhM2NhMjAyOGUwZWQyMDMxNTM5NjE5NmQ0ZTU4MDY1YmY0ZWU3ODqAAn1xAShVEl9hdXRoX3VzZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEDVQ1fYXV0aF91c2VyX2lkcQRLAXUu	2014-02-12 22:46:06.783843-06
+\.
+
+
+--
+-- Data for Name: django_site; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY django_site (id, domain, name) FROM stdin;
+1	example.com	example.com
+\.
+
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('django_site_id_seq', 1, true);
+
+
+--
+-- Data for Name: moderation_moderatedobject; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY moderation_moderatedobject (id, content_type_id, object_pk, date_created, moderation_state, moderation_status, moderated_by_id, moderation_date, moderation_reason, changed_object, changed_by_id) FROM stdin;
+1	12	1	2013-12-04 10:18:38.050005-06	0	2	\N	\N	\N	[{"pk": 1, "model": "business.day", "fields": {"close_hour": "18:33:58", "open_hour": "12:33:45", "name": "sundaya", "business": 1}}]	\N
+2	12	2	2014-01-13 15:24:35.822298-06	0	2	\N	\N	\N	[{"pk": 2, "model": "business.day", "fields": {"close_hour": "18:33:57", "open_hour": "12:33:45", "name": "mondaya", "business": 1}}]	\N
+\.
+
+
+--
+-- Name: moderation_moderatedobject_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('moderation_moderatedobject_id_seq', 2, true);
+
+
+--
+-- Data for Name: south_migrationhistory; Type: TABLE DATA; Schema: public; Owner: mitch.heard
+--
+
+COPY south_migrationhistory (id, app_name, migration, applied) FROM stdin;
+1	business	0001_initial	2013-04-28 18:29:43.186401-05
+2	moderation	0001_initial	2013-12-04 00:13:20.476774-06
+\.
+
+
+--
+-- Name: south_migrationhistory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mitch.heard
+--
+
+SELECT pg_catalog.setval('south_migrationhistory_id_seq', 2, true);
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_key UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_codename_key; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_key UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_user_id_group_id_key; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_key UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_key UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: business_business_location_id_key; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY business_business
+    ADD CONSTRAINT business_business_location_id_key UNIQUE (location_id);
+
+
+--
+-- Name: business_business_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY business_business
+    ADD CONSTRAINT business_business_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: business_day_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY business_day
+    ADD CONSTRAINT business_day_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: business_location_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY business_location
+    ADD CONSTRAINT business_location_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: business_phonenumber_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY business_phonenumber
+    ADD CONSTRAINT business_phonenumber_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_model_key; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_key UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: django_site_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY django_site
+    ADD CONSTRAINT django_site_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: moderation_moderatedobject_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY moderation_moderatedobject
+    ADD CONSTRAINT moderation_moderatedobject_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: south_migrationhistory_pkey; Type: CONSTRAINT; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+ALTER TABLE ONLY south_migrationhistory
+    ADD CONSTRAINT south_migrationhistory_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_name_like; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX auth_group_name_like ON auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_group_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_group_id ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_permission_id ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX auth_permission_content_type_id ON auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_group_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_group_id ON auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_user_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_user_id ON auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_permission_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_permission_id ON auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_user_id ON auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_like; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX auth_user_username_like ON auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: business_business_phoneNumber_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX "business_business_phoneNumber_id" ON business_business USING btree ("phoneNumber_id");
+
+
+--
+-- Name: business_day_business_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX business_day_business_id ON business_day USING btree (business_id);
+
+
+--
+-- Name: django_admin_log_content_type_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_content_type_id ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_user_id ON django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_expire_date; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX django_session_expire_date ON django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_like; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX django_session_session_key_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: moderation_moderatedobject_changed_by_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX moderation_moderatedobject_changed_by_id ON moderation_moderatedobject USING btree (changed_by_id);
+
+
+--
+-- Name: moderation_moderatedobject_content_type_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX moderation_moderatedobject_content_type_id ON moderation_moderatedobject USING btree (content_type_id);
+
+
+--
+-- Name: moderation_moderatedobject_moderated_by_id; Type: INDEX; Schema: public; Owner: mitch.heard; Tablespace: 
+--
+
+CREATE INDEX moderation_moderatedobject_moderated_by_id ON moderation_moderatedobject USING btree (moderated_by_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_permission_id_fkey FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_fkey FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_permission_id_fkey FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: business_id_refs_id_740b843a86defa34; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY business_day
+    ADD CONSTRAINT business_id_refs_id_740b843a86defa34 FOREIGN KEY (business_id) REFERENCES business_business(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: changed_by_id_refs_id_1456e81de6a4bbdd; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY moderation_moderatedobject
+    ADD CONSTRAINT changed_by_id_refs_id_1456e81de6a4bbdd FOREIGN KEY (changed_by_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: content_type_id_refs_id_6b1be6d8318beb61; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY moderation_moderatedobject
+    ADD CONSTRAINT content_type_id_refs_id_6b1be6d8318beb61 FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: content_type_id_refs_id_d043b34a; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT content_type_id_refs_id_d043b34a FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_content_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_content_type_id_fkey FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: group_id_refs_id_f4b32aac; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT group_id_refs_id_f4b32aac FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: location_id_refs_id_45d2370133e4fdf6; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY business_business
+    ADD CONSTRAINT location_id_refs_id_45d2370133e4fdf6 FOREIGN KEY (location_id) REFERENCES business_location(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: moderated_by_id_refs_id_1456e81de6a4bbdd; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY moderation_moderatedobject
+    ADD CONSTRAINT moderated_by_id_refs_id_1456e81de6a4bbdd FOREIGN KEY (moderated_by_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: phoneNumber_id_refs_id_1ac21b4cad89ba35; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY business_business
+    ADD CONSTRAINT "phoneNumber_id_refs_id_1ac21b4cad89ba35" FOREIGN KEY ("phoneNumber_id") REFERENCES business_phonenumber(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_40c41112; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT user_id_refs_id_40c41112 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_4dc23c39; Type: FK CONSTRAINT; Schema: public; Owner: mitch.heard
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT user_id_refs_id_4dc23c39 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: mitch.heard
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM "mitch.heard";
+GRANT ALL ON SCHEMA public TO "mitch.heard";
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect "mitch.heard"
+
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: mitch.heard
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM "mitch.heard";
+GRANT ALL ON SCHEMA public TO "mitch.heard";
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect mitchheardcom
+
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: alembic_version; Type: TABLE; Schema: public; Owner: mheard; Tablespace: 
+--
+
+CREATE TABLE alembic_version (
+    version_num character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.alembic_version OWNER TO mheard;
+
+--
+-- Name: articles; Type: TABLE; Schema: public; Owner: mheard; Tablespace: 
+--
+
+CREATE TABLE articles (
+    id integer NOT NULL,
+    title character varying(100),
+    body text,
+    created timestamp without time zone,
+    category_name character varying(10),
+    person_name character varying(100)
+);
+
+
+ALTER TABLE public.articles OWNER TO mheard;
+
+--
+-- Name: articles_id_seq; Type: SEQUENCE; Schema: public; Owner: mheard
+--
+
+CREATE SEQUENCE articles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.articles_id_seq OWNER TO mheard;
+
+--
+-- Name: articles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mheard
+--
+
+ALTER SEQUENCE articles_id_seq OWNED BY articles.id;
+
+
+--
+-- Name: category; Type: TABLE; Schema: public; Owner: mheard; Tablespace: 
+--
+
+CREATE TABLE category (
+    id integer NOT NULL,
+    name character varying(100),
+    description text
+);
+
+
+ALTER TABLE public.category OWNER TO mheard;
+
+--
+-- Name: category_id_seq; Type: SEQUENCE; Schema: public; Owner: mheard
+--
+
+CREATE SEQUENCE category_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.category_id_seq OWNER TO mheard;
+
+--
+-- Name: category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mheard
+--
+
+ALTER SEQUENCE category_id_seq OWNED BY category.id;
+
+
+--
+-- Name: person; Type: TABLE; Schema: public; Owner: mheard; Tablespace: 
+--
+
+CREATE TABLE person (
+    id integer NOT NULL,
+    firstname character varying(100),
+    lastname character varying(100),
+    email character varying(120),
+    pwdhash character varying(100)
+);
+
+
+ALTER TABLE public.person OWNER TO mheard;
+
+--
+-- Name: person_id_seq; Type: SEQUENCE; Schema: public; Owner: mheard
+--
+
+CREATE SEQUENCE person_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.person_id_seq OWNER TO mheard;
+
+--
+-- Name: person_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mheard
+--
+
+ALTER SEQUENCE person_id_seq OWNED BY person.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mheard
+--
+
+ALTER TABLE ONLY articles ALTER COLUMN id SET DEFAULT nextval('articles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mheard
+--
+
+ALTER TABLE ONLY category ALTER COLUMN id SET DEFAULT nextval('category_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: mheard
+--
+
+ALTER TABLE ONLY person ALTER COLUMN id SET DEFAULT nextval('person_id_seq'::regclass);
+
+
+--
+-- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: mheard
+--
+
+COPY alembic_version (version_num) FROM stdin;
+2f3ba7466a45
+\.
+
+
+--
+-- Data for Name: articles; Type: TABLE DATA; Schema: public; Owner: mheard
+--
+
+COPY articles (id, title, body, created, category_name, person_name) FROM stdin;
+2	test	test	2014-02-12 00:52:10.833264	\N	\N
+3	test	test	2014-02-12 01:04:22.900212	\N	\N
+4	test	test	2014-02-12 01:19:54.66499	\N	\N
+5	test reject test reject	test	2014-02-12 01:32:35.925261	\N	\N
+6	test	test	2014-02-12 01:42:10.908132	\N	\N
+1	That Sauce	I'm so far ahead of my time, I'm bout to start another life\r\nLook behind you, I'm bout to pass you twice	2014-02-11 22:25:18.866657	\N	\N
+7	Ten Fifty four	Where we begin to dream, to climb, to score. The start.	2014-02-12 22:55:07.682351	\N	\N
+8	For the Gold	She's even holding a gold GoPro.	2014-02-12 23:45:30.956176	Olympics	\N
+9	name	check	2014-02-13 00:54:10.111264	firstcat	Mitch
+10	Hey Kendall!!!	She's a llama	2014-02-13 23:13:06.145151	yamma	Mitch
+11	Reggie's Test!	This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more	2014-02-17 13:18:47.642604	firstcat	Reggie
+\.
+
+
+--
+-- Name: articles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mheard
+--
+
+SELECT pg_catalog.setval('articles_id_seq', 12, true);
+
+
+--
+-- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: mheard
+--
+
+COPY category (id, name, description) FROM stdin;
+1	firstcat	This is the first category
+2	Olympics	It's on.
+3	yamma	mamma
+\.
+
+
+--
+-- Name: category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mheard
+--
+
+SELECT pg_catalog.setval('category_id_seq', 3, true);
+
+
+--
+-- Data for Name: person; Type: TABLE DATA; Schema: public; Owner: mheard
+--
+
+COPY person (id, firstname, lastname, email, pwdhash) FROM stdin;
+1	Mitch	Heard	mitchheard@gmail.com	pbkdf2:sha1:1000$gVSdYbMg$e63a1b4b8ec0959bc58146525e0129977d7f4370
+2	Reggie	Miller	reggiemiller@aol.com	pbkdf2:sha1:1000$EwvvCQIB$68199201819f620f99d5e364b0ca7473d3c23c8e
+\.
+
+
+--
+-- Name: person_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mheard
+--
+
+SELECT pg_catalog.setval('person_id_seq', 2, true);
+
+
+--
+-- Name: articles_pkey; Type: CONSTRAINT; Schema: public; Owner: mheard; Tablespace: 
+--
+
+ALTER TABLE ONLY articles
+    ADD CONSTRAINT articles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: category_name_key; Type: CONSTRAINT; Schema: public; Owner: mheard; Tablespace: 
+--
+
+ALTER TABLE ONLY category
+    ADD CONSTRAINT category_name_key UNIQUE (name);
+
+
+--
+-- Name: category_pkey; Type: CONSTRAINT; Schema: public; Owner: mheard; Tablespace: 
+--
+
+ALTER TABLE ONLY category
+    ADD CONSTRAINT category_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: person_email_key; Type: CONSTRAINT; Schema: public; Owner: mheard; Tablespace: 
+--
+
+ALTER TABLE ONLY person
+    ADD CONSTRAINT person_email_key UNIQUE (email);
+
+
+--
+-- Name: person_pkey; Type: CONSTRAINT; Schema: public; Owner: mheard; Tablespace: 
+--
+
+ALTER TABLE ONLY person
+    ADD CONSTRAINT person_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: mitch.heard
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM "mitch.heard";
+GRANT ALL ON SCHEMA public TO "mitch.heard";
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect postgres
+
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: postgres; Type: COMMENT; Schema: -; Owner: mitch.heard
+--
+
+COMMENT ON DATABASE postgres IS 'default administrative connection database';
+
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: mitch.heard
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM "mitch.heard";
+GRANT ALL ON SCHEMA public TO "mitch.heard";
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect template1
+
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: template1; Type: COMMENT; Schema: -; Owner: mitch.heard
+--
+
+COMMENT ON DATABASE template1 IS 'default template for new databases';
+
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: mitch.heard
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM "mitch.heard";
+GRANT ALL ON SCHEMA public TO "mitch.heard";
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect voyagur_db
+
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: mitch.heard
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM "mitch.heard";
+GRANT ALL ON SCHEMA public TO "mitch.heard";
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- PostgreSQL database cluster dump complete
+--
+

@@ -22,6 +22,14 @@ def index():
         return render_template('index.html', articles=articles, name=name)
     return render_template('index.html', articles=articles)
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/projects')
+def projects():
+    return render_template('projects.html')
+
 @app.route('/dash/<name>')
 def dashboard(name):
     if 'email' not in session:
@@ -32,6 +40,18 @@ def dashboard(name):
         person = Person.query.filter_by(email=session['email']).first()
         name = person.firstname
         return render_template('dashboard.html', articles=articles, person=person, name=name)
+    return redirect(url_for('index'))
+
+@app.route('/dash/posts/<name>')
+def article_dashboard(name):
+    if 'email' not in session:
+        return redirect(url_for('index'))
+    person = Person.query.filter_by(email=session['email']).first()
+    if name == person.firstname:
+        articles = Article.find_by_author(name)
+        person = Person.query.filter_by(email=session['email']).first()
+        name = person.firstname
+        return render_template('article_dashboard.html', articles=articles, person=person, name=name)
     return redirect(url_for('index'))
 
 # Todo: When you update password, doesn't seem to update it in DB for next login #
@@ -66,13 +86,13 @@ def signup():
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
-  form = SigninForm()
-  if form.validate_on_submit():
-      session['email'] = form.email.data
-      person = Person.query.filter_by(email=session['email']).first()
-      name = person.firstname
-      return redirect(url_for('dashboard', name=name))
-  return render_template('signin.html', form=form)
+    form = SigninForm()
+    if form.validate_on_submit():
+        session['email'] = form.email.data
+        person = Person.query.filter_by(email=session['email']).first()
+        name = person.firstname
+        return redirect(url_for('dashboard', name=name))
+    return render_template('signin.html', form=form)
 
 @app.route('/signout')
 def signout():

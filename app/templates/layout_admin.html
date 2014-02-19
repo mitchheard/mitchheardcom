@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block admin_navigation %}
+
+{% if 'email' in session %}
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{ url_for('dashboard', name=name) }}">Dash</a></li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="{{ url_for('settings') }}">Settings</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Blog Tools</li>
+                <li><a href="{{ url_for('article_dashboard', name=name) }}">Moderate Posts</a></li>
+                <li><a href="{{ url_for('article_create') }}">Create Post</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Auth Testing</li>
+                <li><a href="{{ url_for('signin', name=name) }}">Sign In</a></li>
+                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+            </ul>
+        </li>
+        <li><a href="/signout">Sign Out</a></li>
+    </ul>
+{% endif %}
+
+{% block jumbotron %}
+{% endblock %}
+
+{% endblock %}

@@ -1,9 +1,5 @@
 {% extends "layout_admin.html" %}
 {% block content %}
-    <h1>Welcome back {{ name }}!</h1>
-    <div>
-        <p>Other dashboard stuff will go here, like stats, various uses of financial api's...?</p>
-    </div>
     {% if not articles  %}
     <div class="dash">
         <h1>Its Lonely here, Create Some Articles</h1>
@@ -12,7 +8,7 @@
     {% else %}
 
     <div class="dashboard moderate-articles">
-        <h2>Moderate Posts</h2>
+        <h1>Moderate Posts</h2>
         <table class="table">
         <thead>
               <tr>

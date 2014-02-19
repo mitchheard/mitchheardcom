@@ -20,7 +20,7 @@
                   padding-bottom: 20px;
               }
         </style>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"/>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css" media="screen" />
         <link rel="stylesheet" href="{{ url_for('static', filename='css/zocial.css') }}" type="text/css" media="screen" />
         <link href="{{ url_for('static', filename='lightbox/css/lightbox.css') }}" rel="stylesheet" />
@@ -40,44 +40,35 @@
  </head>
     <body>
         <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+            <p class="chromeframe">You are using an <strong>outdated</strong> bfooter-rowser. Please <a href="http://bfooter-rowsehappy.com/">upgrade your bfooter-rowser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
-        <div class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="{{ url_for('index') }}">Mitch Heard</a>
-            </div>
-            <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="{{ url_for('dashboard', name=name) }}">Dashboard</a></li>
-                    <li><a href="{{ url_for('settings') }}">Settings</a></li>
-                    <li><a href="{{ url_for('article_create') }}">Create Article</a></li>
-                    <li class="divider"></li>
-                    <li class="dropdown-header">Authentication</li>
-                    {% if 'email' in session %}
-                    <li><a href="{{ url_for('signout', name=name) }}">Sign Out</a></li>
-                    {% else %}
-                    <li><a href="{{ url_for('signin', name=name) }}">Sign In</a></li>
-                    <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
-                    {% endif %}
-                  </ul>
-                </li>
-              </ul>
-            </div><!--/.navbar-collapse -->
-          </div>
+        <div class="navbar navbar-inverse navbar-fixed-top role=" navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ url_for('index') }}">Mitch Heard</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                {% block admin_navigation %}
+
+                {% endblock %}
+                </div>
+                <!--/.nav-collapse -->
+            </div><!--/.container-fluid -->
         </div>
         <!-- Main jumbotron for a primary marketing message or call to action -->
+
+    {% block jumbotron %}
         <div class="jumbotron">
           <div class="container">
             <h1>Hello, world!</h1>
@@ -86,16 +77,81 @@
           </div>
         </div>
 
+    {% endblock %}
         <div class="container">
             {% block content %}
 
             {% endblock %}
-
-            <hr>
-            <footer>
-                <p>&copy; Company 2013</p>
-            </footer>
         </div>
+
+        <div id="footer-wrapper">
+				<footer id="footer" class="container">
+					<div class="footer-row">
+						<div class="footer-column">
+
+							<!-- Links -->
+								<section class="widget-links">
+									<h2>Random Stuff</h2>
+									<ul class="style2">
+										<li><a href="#">Etiam feugiat condimentum</a></li>
+										<li><a href="#">Aliquam imperdiet suscipit odio</a></li>
+										<li><a href="#">Sed porttitor cras in erat nec</a></li>
+										<li><a href="#">Felis varius pellentesque potenti</a></li>
+										<li><a href="#">Nullam scelerisque blandit leo</a></li>
+									</ul>
+								</section>
+
+						</div>
+						<div class="footer-column">
+
+							<!-- Links -->
+								<section class="widget-links">
+									<h2>Random Stuff</h2>
+									<ul class="style2">
+										<li><a href="#">Etiam feugiat condimentum</a></li>
+										<li><a href="#">Aliquam imperdiet suscipit odio</a></li>
+										<li><a href="#">Sed porttitor cras in erat nec</a></li>
+										<li><a href="#">Felis varius pellentesque potenti</a></li>
+										<li><a href="#">Nullam scelerisque blandit leo</a></li>
+									</ul>
+								</section>
+
+						</div>
+						<div class="footer-column">
+
+							<!-- Work -->
+								<section class="widget-links">
+									<h2>Work</h2>
+										<li><a href="https://github.com/mitchheard">GitHub</a></li>
+										<li><a href="#">Aliquam imperdiet suscipit odio</a></li>
+										<li><a href="#">Sed porttitor cras in erat nec</a></li>
+										<li><a href="#">Felis varius pellentesque potenti</a></li>
+										<li><a href="#">Nullam scelerisque blandit leo</a></li>
+								</section>
+
+						</div>
+						<div class="footer-column">
+
+							<!-- Social -->
+								<section class="widget-contact last">
+                                   <h2>Social</h2>
+									<ul>
+										<li><a href="http://twitter.com/mitchheard" class="fa fa-twitter solo"><span>Twitter</span></a></li>
+										<li><a href="http://facebook.com" class="fa fa-facebook solo"><span>Facebook</span></a></li>
+										<li><a href="http://www.linkedin.com/in/mitchheard" class="fa fa-dribbble solo"><span>Linked-In</span></a></li>
+										<li><a href="https://plus.google.com/110435217182535622882" class="fa fa-google-plus solo"><span>Google+</span></a></li>
+									</ul>
+									<p>1234 Fictional Road Suite #5432<br />
+									Nashville, Tennessee 00000-0000<br />
+									(800) 555-0000</p>
+								</section>
+
+						</div>
+					</div>
+				</footer>
+			</div>
+
+
         <!-- /container -->
         {% block js_footer %}
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -112,69 +168,3 @@
         {% endblock %}
     </body>
 </html>
-
-
-
-{#    <div class="container">#}
-{#        <div class="page-header">#}
-{#            <div class="pager-banner">#}
-{#                <div class="page-banner-left">#}
-{#                    <div style="float: left; width: 50%;">#}
-{#                        <div style="text-align: right; font-family: Georgia, serif; padding-right: 10px;">#}
-{#                            <span style="font-size: 55px;">Mitch Heard</span>#}
-{#                        </div>#}
-{#                        <div style="text-align: right; font-family: Georgia, serif; margin-top: 0; padding-right: 10px;">#}
-{#                            <a href="mailto:&#109;&#105;&#116;&#099;&#104;&#104;&#101;&#097;&#114;&#100;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;" class="zocial icon email" alt="Send Mitch an Email">Send a message</a>#}
-{#                            <a href="http://www.facebook.com/mitchheard" class="zocial icon facebook" alt="Visit Mitch on Facebook">Facebook</a>#}
-{#                            <a href="https://plus.google.com/110435217182535622882" class="zocial icon googleplus" alt="Visit Mitch on Google+">Google+</a>#}
-{#                            <a href="http://twitter.com/mitchheard" class="zocial icon twitter" alt="Tweet Tweet">Twitter</a>#}
-{#                            <a href="http://www.linkedin.com/in/mitchheard" class="zocial icon linkedin" alt="See Mitch's resume">LinkedIn</a>#}
-{#                            <a href="https://github.com/mitchheard" class="zocial icon github" alt="Mitch's programming projects">Github</a>#}
-{#                            <a href="http://flickr.com/photos/mitchheard" class="zocial icon flickr" alt="Mitch's photos">Flickr</a>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="page-banner-right">#}
-{#                    <div style="font-family: Georgia, serif; padding-left: 10px; margin-top: 22px;">#}
-{#                        <div style="font-size: 30px;">Austin, Texas</div>#}
-{#                        <div style="font-size: 40px; margin-top: 6px;">Works at <a href="http://www.bazaarvoice.com/">Bazaarvoice</a></div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    <header>#}
-{#        <div class="navbar">#}
-{#            <div class="navbar-inner">#}
-{#                <ul class="nav">#}
-{#                    <li><a href="{{ url_for('index') }}">Home</a></li>#}
-{#                    {% if 'email' in session %}#}
-{##}
-{#                    <li><a class='active' href="{{ url_for('profile') }}">Profile</a></li>#}
-{#                    <li><a href="{{ url_for('signout') }}">Sign Out</a></li>#}
-{#                    {% else %}#}
-{#                    <li><a href="{{ url_for('signup') }}">Sign Up</a></li>#}
-{#                    <li><a href="{{ url_for('signin') }}">Sign In</a></li>#}
-{#                    {% endif %}#}
-{#                </ul>#}
-{#            </div>#}
-{#        </div>#}
-{#    </header>#}
-{#        {% block content %}#}
-{##}
-{#        {% endblock %}#}
-{#        <hr/>#}
-{#        <div class="modal-footer">#}
-{#                <h4>&#64 mitchheard</h4>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#{% block js_footer %}#}
-{#    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>#}
-{#    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>#}
-{#    <script src="{{ url_for('static', filename='js/modernizr.js') }}"></script>#}
-{#    <script src="{{ url_for('static', filename='js/respond.min.js') }}"></script>#}
-{##}
-{#    <script src="{{ url_for('static', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>#}
-{#    <script src="{{ url_for('static', filename='js/prefixfree.min.js') }}"></script>#}
-{#    <script src="{{ url_for('static', filename='js/jquery.slides.min.js') }}"></script>#}
-
